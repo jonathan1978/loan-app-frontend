@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Agent App",
+    "description": "app",
+    "slug": "agent",
+    "privacy": "public",
+    "sdkVersion": "39.0.0",
+    "platforms": [
+      "android"
+    ],
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "androidStatusBar": {
+      "backgroundColor": "#00101d",
+      "translucent": true
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.example.agent",
+      "versionCode": 1
+    }
+  }
+}
