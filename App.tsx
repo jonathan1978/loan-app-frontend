@@ -1,14 +1,18 @@
-import React from 'react';
-import * as Font from 'expo-font';
-import 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import * as Font from "expo-font";
+import "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 
-import { AppLoading } from 'expo';
-import { isLogined } from './services/ApiService';
-import LoginScreen from './screens/LoginScreen';
-import CustomersScreen from './screens/CustomersScreen';
-import SingleCustomerScreen from './screens/SingleCustomerScreen';
+import { AppLoading } from "expo";
+import { isLogined } from "./services/ApiService";
+import LoginScreen from "./screens/LoginScreen";
+import CustomersScreen from "./screens/CustomersScreen";
+import SingleCustomerScreen from "./screens/SingleCustomerScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Root } from "native-base";
 
+const Stack = createStackNavigator();
 
 /**
  *Initial function which runs as soon as the app starts.
@@ -20,14 +24,16 @@ import SingleCustomerScreen from './screens/SingleCustomerScreen';
 export default class App extends React.Component {
   state = {
     isReady: false,
-    intialRouteName: 'Customers'
+    initialRouteName: "Customers",
   };
 
-
-  async componentWillMount() {
+  async componentDidMount() {
     await this.loadResources();
     const isLogin = await isLogined();
-    this.setState({ isReady: true, initialRouteName: !isLogin ? 'Login' : this.state.initialRouteName });
+    this.setState({
+      isReady: true,
+      initialRouteName: !isLogin ? "Login" : this.state.initialRouteName,
+    });
   }
 
   render() {
@@ -56,13 +62,23 @@ export default class App extends React.Component {
     /* {Platform.OS === 'ios' && <StatusBar barStyle="default" backgroundColor="#00101d" />} */
     /* {Platform.OS === 'android' && <StatusBar hidden={false} translucent={true} backgroundColor="#00101d" />} */
     return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={this.state.intialRouteName}>
-          <Stack.Screen name="Customers" component={CustomersScreen} />
-          <Stack.Screen name="SingleCustomer" component={SingleCustomerScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Root>
+        <NavigationContainer documentTitle={{ enabled: false }}>
+          <Stack.Navigator
+            initialRouteName={this.state.initialRouteName}
+            screenOptions={{
+              animationEnabled: true,
+            }}
+          >
+            <Stack.Screen name="Customers" component={CustomersScreen} />
+            <Stack.Screen
+              name="SingleCustomer"
+              component={SingleCustomerScreen}
+            />
+            <Stack.Screen name="Login" component={LoginScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Root>
     );
   }
   /**
@@ -70,12 +86,12 @@ export default class App extends React.Component {
    *
    * @memberof App
    */
-  loadResources = async () => {
-    await Font.loadAsync({
-      Roboto: require('native-base/Fonts/Roboto.ttf'),
-      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+  async loadResources() {
+    return await Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       ...Ionicons.font,
-    })
+    });
   }
 }
 

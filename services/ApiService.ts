@@ -36,7 +36,7 @@ export async function Logout() {
   return rs;
 }
 export async function ListCustomers() {
-  const res = await fetch(CONFIG.API + '/customers', {
+  const res = await fetch(CONFIG.API + '/', {
     method: 'GET',
     credentials: 'include',
     headers: {

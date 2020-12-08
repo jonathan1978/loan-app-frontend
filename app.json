@@ -1,5 +1,15 @@
 {
   "expo": {
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "name": "Agent App",
     "description": "app",
     "slug": "agent",
