@@ -6,7 +6,6 @@ import {
   Input,
   Spinner,
   Toast,
-  Icon,
   Container,
   Header,
   Content,
@@ -15,7 +14,6 @@ import {
   Button,
 } from "native-base";
 import { Login as L } from "../services/ApiService";
-import Internet from "../services/InternetService";
 
 export default class LoginScreen extends Component {
   props: any;
@@ -39,7 +37,7 @@ export default class LoginScreen extends Component {
     });
   };
 
-  renderToast = (message, type = "danger") => {
+  renderToast = (message, type: any = "danger") => {
     Toast.show({
       text: message,
       position: "bottom",
@@ -98,9 +96,9 @@ export default class LoginScreen extends Component {
         <Image
           source={require("../assets/logo.png")}
           style={{
-            width: 60,
-            height: 60,
-            marginTop: 25,
+            width: 80,
+            height: 80,
+            marginTop: 80,
             marginBottom: 25,
             justifyContent: "center",
             marginLeft: "auto",
@@ -135,7 +133,11 @@ export default class LoginScreen extends Component {
             block
             onPress={this.login}
           >
-            <Text> Primary </Text>
+            <Image
+              source={require("../assets/login-w.png")}
+              style={{ width: 24, height: 24 }}
+            />
+            <Text> Log in </Text>
           </Button>
           {isLoading && <Spinner />}
         </Form>
@@ -150,5 +152,6 @@ const styles = StyleSheet.create({
   },
   submit: {
     marginTop: 40,
+    backgroundColor: 'black'
   },
 });

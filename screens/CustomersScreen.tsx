@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import {
   Button,
   Container,
@@ -8,7 +8,6 @@ import {
   Left,
   Body,
   ListItem,
-  Icon,
   Form,
   Item,
   Input,
@@ -16,6 +15,7 @@ import {
 import { ListCustomers, Logout } from "../services/ApiService";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
+import { AppLoading } from "expo";
 export class Customer {
   "arrears": number;
   "city": string;
@@ -33,8 +33,10 @@ export default class CustomersScreen extends Component {
   props: any;
   state: {
     customers: Customer[];
+    isLoading: boolean;
   } = {
     customers: [],
+    isLoading: true,
   };
   constructor(props: {} | Readonly<{}>) {
     super(props);
@@ -54,7 +56,15 @@ export default class CustomersScreen extends Component {
       headerRight: ({}) => {
         return (
           <Button transparent onPress={this.logout.bind(this)}>
-            <Ionicons name="log-out-outline" size={24} color="black" />
+            <Image
+              source={require("../assets/logout.png")}
+              style={{
+                width: 24,
+                height: 24,
+                marginRight: 5
+              }}
+            />
+            {/* <Ionicons name="log-out-outline" size={24} color="black" /> */}
           </Button>
         );
       },
@@ -69,6 +79,11 @@ export default class CustomersScreen extends Component {
       })
       .catch((r: any) => {
         console.error(r);
+      })
+      .finally(() => {
+        this.setState({
+          isLoading: false,
+        });
       });
   }
   logout() {
@@ -86,7 +101,7 @@ export default class CustomersScreen extends Component {
     console.log(customers);
     return customers.map((c) => {
       return (
-        <ListItem avatar onPressOut={() => this.showCustomer(c)}>
+        <ListItem avatar key={c.id} onPressOut={() => this.showCustomer(c)}>
           <Left>
             <Button
               rounded
@@ -123,13 +138,23 @@ export default class CustomersScreen extends Component {
         style={{ paddingVertical: 10, paddingHorizontal: 10, paddingTop: 100 }}
       >
         <Form style={{ paddingHorizontal: 10 }}>
-          <Item rounded>
+          <Item rounded style={{paddingHorizontal: 10}}>
             <Input placeholder="Search Customers"></Input>
-            <Icon name="search"></Icon>
+            <Image
+              source={require("../assets/search.png")}
+              style={{
+                width: 24,
+                height: 24,
+              }}
+            />
           </Item>
         </Form>
         <ScrollView>
-          <List>{this.renderCustomers()}</List>
+          {this.state.isLoading ? (
+            <AppLoading />
+          ) : (
+            <List>{this.renderCustomers()}</List>
+          )}
         </ScrollView>
       </Container>
     );

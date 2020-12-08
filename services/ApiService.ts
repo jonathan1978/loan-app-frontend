@@ -32,7 +32,7 @@ export async function Logout() {
   if (rs.error) {
     throw new Error(rs.error);
   }
-  await AsyncStorage.setItem('isLogined', '0');
+  await AsyncStorage.removeItem('isLogined');
   return rs;
 }
 export async function ListCustomers() {

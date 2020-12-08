@@ -11,7 +11,7 @@ import SingleCustomerScreen from "./screens/SingleCustomerScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Root } from "native-base";
-
+import { StatusBar } from "react-native";
 const Stack = createStackNavigator();
 
 /**
@@ -28,8 +28,13 @@ export default class App extends React.Component {
   };
 
   async componentDidMount() {
-    await this.loadResources();
+    try {
+      await this.loadResources();
+    } catch (e) {
+      console.log(e);
+    }
     const isLogin = await isLogined();
+    console.log("is LOgined", isLogin);
     this.setState({
       isReady: true,
       initialRouteName: !isLogin ? "Login" : this.state.initialRouteName,
@@ -40,29 +45,13 @@ export default class App extends React.Component {
     if (!this.state.isReady) {
       return <AppLoading />;
     }
-    // const { resources, permissions } = this.state;
-    // if (resources.loading || permissions.loading) {
-    //   if (resources.loading) {
-    //     return <AppLoading />;
-    //   }
-    //   if (permissions.loading) {
-    //     return (
-    //       <View style={styles.containerofPermissions}>
-    //         <Text style={styles.permissionsDeniedText}>{permissions.message}</Text>
-    //         <View style={styles.allowPermissionButtonContainer}>
-    //           <Button primary style={styles.permissionsButton}
-    //             onPress={this.getPermissions}>
-    //             <Text style={styles.permissionsButtonText}> Allow Permissions </Text>
-    //           </Button>
-    //         </View>
-    //       </View>
-    //     );
-    //   }
-    // } else {
-    /* {Platform.OS === 'ios' && <StatusBar barStyle="default" backgroundColor="#00101d" />} */
-    /* {Platform.OS === 'android' && <StatusBar hidden={false} translucent={true} backgroundColor="#00101d" />} */
     return (
       <Root>
+        <StatusBar
+          backgroundColor="black"
+          barStyle="light-content"
+          translucent
+        ></StatusBar>
         <NavigationContainer documentTitle={{ enabled: false }}>
           <Stack.Navigator
             initialRouteName={this.state.initialRouteName}
@@ -90,6 +79,7 @@ export default class App extends React.Component {
     return await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf"),
       ...Ionicons.font,
     });
   }
